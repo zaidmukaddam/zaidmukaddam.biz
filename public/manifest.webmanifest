@@ -1,0 +1,13 @@
+{
+  "theme_color": "#cbd5e0",
+  "background_color": "#171923",
+  "lang": "en",
+  "dir": "ltr",
+  "display": "standalone",
+  "scope": "/",
+  "name": "Zaid Mukaddam's Portfolio",
+  "app_name": "Zaid Mukaddam's Portfolio",
+  "description": "Personal space on the internet to share my work, my thoughts, a bit about myself and my working process, along with get in touch information.",
+  "start_url": "/",
+  "short_name": "ZM"
+}

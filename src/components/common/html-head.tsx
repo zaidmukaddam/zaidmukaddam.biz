@@ -94,6 +94,7 @@ export default function HtmlHead({
           href='/images/safari-pinned-tab.svg'
           color='#171923'
         />
+        <script async src="https://cdn.splitbee.io/sb.js"></script>
       </NextHead>
     </>
   );

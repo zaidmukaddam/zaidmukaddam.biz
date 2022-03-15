@@ -1,5 +1,3 @@
-const { withSentryConfig } = require('@sentry/nextjs');
-
 const defaultConfigs = {
   reactStrictMode: true,
   async headers() {
@@ -25,14 +23,6 @@ const defaultConfigs = {
   images: {
     domains: ['cdn.hashnode.com', 'cdn.splitbee.io', 'tinkertools.design'],
   },
-};
-
-const SentryWebpackPluginOptions = {
-  /**
-   * For all available options, see:
-   * @see https://github.com/getsentry/sentry-webpack-plugin#options.
-   */
-  silent: true,
 };
 
 const customHeaders = [
@@ -81,5 +71,3 @@ const customHeaders = [
     value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
   },
 ];
-
-module.exports = withSentryConfig(defaultConfigs, SentryWebpackPluginOptions);

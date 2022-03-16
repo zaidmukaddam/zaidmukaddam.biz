@@ -13,7 +13,7 @@ export default function NotFoundPage() {
             as='h1'
             className='font-black text-8xl text-center fill-color pb-14'
             resetStyles>
-            OPS
+            OOPS
           </Typography>
 
           <Typography

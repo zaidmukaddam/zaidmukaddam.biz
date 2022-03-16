@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Preloader />
       <Cursor />
-        <Component {...pageProps} />
+      <Component {...pageProps} />
     </>
   );
 }

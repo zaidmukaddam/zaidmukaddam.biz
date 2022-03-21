@@ -46,7 +46,7 @@ Still unsure of practical applications for this technique? Keep reading.
 
 ## Proof-of-Concept live chat with zero JavaScript
 
-Recently, I finished a project called [ZeroChat](https://github.com/zaidmukaddam/zerochat/).
+Recently, I finished a project called [ZeroChat](https://zerochat.zaidmukaddam.repl.co/).
 The idea is that, by never closing the server's response and letting the browser continue to wait for more HTML, you can continue sending more data; hence, keep showing more messages.
 
 If you have `<iframe>`s in the initially loaded page, they can independently submit HTTP requests, and the server can update/add to the main page, which hasn't disconnected yet and is still waiting for the signal to close the connection.

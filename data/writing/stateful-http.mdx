@@ -1,0 +1,104 @@
+---
+title: "Stateful HTTP"
+publishedAt: '2022-03-22'
+excerpt: 'Learn about the process of building stateful HTTP services.'
+media: '/images/blog/stateful-http/og.png'
+author: 'Zaid Mukaddam'
+tags: ['proof-of-concept']
+---
+
+
+# Stateful HTTP
+
+You might already know that the HTTP/HTTPS protocol is stateless, and that we need cookies and JavaScript to have an interactive experience on the web with sessions, where our browsers need to either:
+- constantly establish new connections for each request with AJAX
+
+- use a persistent connection like websockets to have a stateful data exchange between client and server
+
+...Right?
+
+Well, I think I figured out a new (or is it old?) way that doesn't rely on JavaScript to have live data updates on a webpage.
+
+## The Workaround
+
+While HTTP isn't supposed to be treated as stateful, it is based on top of the TCP protocol, which is stateful.
+
+Here is a simple TCP connection, and also how an HTTP connection starts:
+
+1. `Client ------SYN-----> Server`
+
+2. `Client <---SYN/ACK---- Server`
+
+3. `Client ------ACK-----> Server`
+
+4. `(Application data is sent back and forth)`
+
+5. `Client <-----FIN------ Server (simplified)`
+
+The idea is this:  
+**By leveraging the fact that a website can keep it's connection to the browser open forever, it can keep sending more and more data to the user. ** By never closing the connection, you can keep the client waiting and update the HTML without a new connection required.
+
+How, you ask, could this do anything useful?
+
+The way I thought of was by using several `<iframe>` tags. This lets us concurrently do something in one `<iframe>` while another is used to submit data to the server, allowing the other to receive more HTML and update, live.
+
+Still unsure of practical applications for this technique? Keep reading.
+
+## Proof-of-Concept live chat with zero JavaScript
+
+Recently, I finished a project called [ZeroChat](https://github.com/zaidmukaddam/zerochat/).
+The idea is that, by never closing the server's response and letting the browser continue to wait for more HTML, you can continue sending more data; hence, keep showing more messages.
+
+If you have `<iframe>`s in the initially loaded page, they can independently submit HTTP requests, and the server can update/add to the main page, which hasn't disconnected yet and is still waiting for the signal to close the connection.
+
+
+Imagine this example in your head:
+– Make the user load a single page with two `<iframe>`s inside.
+– Display a form in the first `<iframe>` which will submit and lead back to itself after submitting. Keep in mind this is all happening inside the first `<iframe>`.
+– Display a page in the second `<iframe> `which never receives a final packet from the server.   
+**Never finishing the HTTP load from the server, this `<iframe>` will keep getting more and more messages from other people in the chat and see their messages get added to `<iframe>`'s body.**
+
+Yes, this works. Imagine your page constantly spinning as if it hasn't finished loading, and when you click on a button in an `<iframe>` to send your chat message, you submit a POST request to the server.
+
+The server sends the other `<iframe>` with more HTML upon receiving this request, and there you have it, a (hacky) solution that provides stateful HTTP.
+
+You can host it yourself pretty easily, [ZeroChat](https://github.com/zaidmukaddam/zerochat/) is just a bit of NodeJS. All you have to do is clone it locally and do `npm install; npm start; `and visit http://localhost:8000. There you go, a live chat with zero client-side scripts.
+
+## Issues
+
+Main problem I ran into while I was proxying the requests through Nginx (this didn't happen with Apache) was that the reverse proxy would buffer the data from the server to the client, preventing the live updates on their browser. The solution is to use proxy_buffering off; in the location {...} block.
+
+Here's an example for googlers looking for a quick fix:
+
+```json[class="line-numbers"]:server
+server {
+
+        server_name chat.example.com;
+
+        location / {
+                proxy_buffering off; # Fixes the issue!
+                # ZeroChat server running locally on port 8000
+                proxy_pass http://127.0.0.1:8000; 
+        }
+
+        listen 80;
+}
+```
+
+In the past, browsers like Firefox would slow down significantly if the connection lasted for a long time, but now both Firefox Quantum and Chrome work splendidly at sustaining long-term HTTP connections that never close.
+
+The only current issue is that Firefox doesn't handle more than one concurrent `<iframe>` that loads endlessly. If you have multiple, Firefox will just get stuck and not show anything in either until one stops loading, even though it works fine in Chrome. I personally like Firefox a lot, so I wanted support in my chat for both, so I'm only keeping a single `<iframe>` permanently open.
+
+If Firefox also supported multiple streaming `<iframe>`s at the same, then we could have more things update, like a live up-to-date sidebar with a list of online users. Actually, that one example can still be achieved, but it would be quite clunky and involve absolute positioning or floating.
+
+One more thing – Chrome stays autofocused on a child `<iframe>`'s input fields if the `<iframe>` was in focus previously and gets reloaded. Firefox doesn't do this, so you have to click/tap on the input box to type a message every time you send one.
+
+Maybe someone reading this could talk to the Firefox devs and ask them to implement this to be on par with Chrome? I might create a new issue about if nobody else does, but it's sortof a non-issue if you don't care about this.
+
+## What were you thinking?!
+
+I was inspired by a [number station](https://en.wikipedia.org/wiki/Numbers_station) I found on a Tor hidden site once, which kept endlessly sending more and more mp3 data without reloading the page, back when JS was blocked completely on the Tor Browser. I was amazed at how it worked, and sought to replicate it.
+
+I accidentally stumbled upon this technique because I didn't think it shouldn't have been possible – my understanding of web servers and back-end programming at the time was very *... infantile*, for the first implementation. I think it was that naiveness which allowed me to think outside the box.
+
+I know I'm probably not the first person to think of this. I finally [found a mention](https://stackoverflow.com/questions/411460/use-http-keep-alive-for-server-to-communicate-to-client?rq=1) of this exact concept back in 2009, someone even stating that they were asked about it in an interview!

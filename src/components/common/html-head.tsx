@@ -64,7 +64,7 @@ export default function HtmlHead({
             content: 'width=device-width, initial-scale=1',
           },
           {
-            name: 'keywords',
+            property: 'keywords',
             content: config.keywords.join(', '),
           }
         ]}

@@ -58,6 +58,16 @@ export default function HtmlHead({
           site: '@zaidmukaddam',
           cardType: 'summary_large_image',
         }}
+        additionalMetaTags={[
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1',
+          },
+          {
+            name: 'keywords',
+            content: config.keywords.join(', '),
+          }
+        ]}
       />
 
       <NextHead>

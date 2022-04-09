@@ -1,7 +1,7 @@
 // packages
 import NextHead from 'next/head';
 import { useRouter } from "next/router";
-import { NextSeo } from 'next-seo';
+import { NextSeo, DefaultSeo } from 'next-seo';
 // internals
 import config from '~data/config';
 import { isBrowser } from '~/utils/dom';
@@ -32,53 +32,10 @@ export default function HtmlHead({
 
   return (
     <>
-      <link rel="dns-prefetch" href="https://zaidmukaddam.biz/images/blog/banner.jpg" />
-      <NextSeo
-        title={title}
-        titleTemplate={config.titleTemplate}
-        description={description}
-        canonical={canonicalUrl}
-        openGraph={{
-          type: isArticle ? 'article' : 'website',
-          locale: config.siteLocale,
-          title,
-          description,
-          site_name: config.siteName,
-          images: [
-            {
-              url: image,
-              width: 1200,
-              height: 630,
-              alt: title,
-            },
-          ],
-          article: {
-            publishedTime,
-            tags,
-          },
-        }}
-        twitter={{
-          handle: '@zaidmukaddam',
-          site: '@zaidmukaddam',
-          cardType: 'summary_large_image'
-        }}
-        additionalMetaTags={[
-          {
-            name: 'viewport',
-            content: 'width=device-width, initial-scale=1',
-          },
-          {
-            property: 'keywords',
-            content: config.keywords.join(', '),
-          }
-        ]}
-      />
-
       <NextHead>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='theme-color' content='#171923' />
-
-        <meta name='twitter:image' content={image} />
+        <link rel="dns-prefect"  />
 
         <link rel='shortcut icon' href='/favicon.ico' />
         <link rel='manifest' href='/manifest.webmanifest' />
@@ -102,6 +59,47 @@ export default function HtmlHead({
         />
         <script async src="https://cdn.splitbee.io/sb.js"></script>
       </NextHead>
+
+      <DefaultSeo 
+        title={title}
+        titleTemplate={config.titleTemplate}
+        description={description}
+        canonical={canonicalUrl}
+        openGraph={{
+          type: isArticle ? 'article' : 'website',
+          locale: config.siteLocale,
+          title,
+          description,
+          site_name: config.siteName,
+          images: [
+            {
+              url: `${config.siteUrl}${image}`,
+              width: 1200,
+              height: 630,
+              alt: title,
+            },
+          ],
+          article: {
+            publishedTime,
+            tags,
+          },
+        }}
+        twitter={{
+          handle: '@zaidmukaddam',
+          site: '@zaidmukaddam',
+          cardType: 'summary_large_image'
+        }}
+        additionalMetaTags={[
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1',
+          },
+          {
+            property: 'keywords',
+            content: config.keywords.join(','),
+          }
+        ]}
+      />
     </>
   );
 }

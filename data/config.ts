@@ -6,7 +6,7 @@ const config = {
   titleTemplate: '%s – Developer, writer.',
   descritpion:
     'Personal space on the internet to share my work, my thoughts, a bit about myself and my working process, along with get in touch information.',
-  defaultImage: 'https://zaidmukaddam.biz/images/blog/banner.jpg',
+  defaultImage: '/images/blog/banner.jpg',
   blog: {
     name: 'Writing',
     path: 'writing',

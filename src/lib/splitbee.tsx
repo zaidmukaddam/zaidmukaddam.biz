@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
   splitbee.init({
     token: process.env.NEXT_PUBLIC_SB_TOKEN,
     disableCookie: false,
-    scriptUrl: '/_analytics',
+    scriptUrl: '/bee.js',
     apiUrl: '/_hive',
   });
 }

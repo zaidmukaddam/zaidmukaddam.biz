@@ -1,5 +1,6 @@
 // packages
 import NextHead from 'next/head';
+import { useRouter } from "next/router";
 import { NextSeo } from 'next-seo';
 // internals
 import config from '~data/config';
@@ -26,6 +27,8 @@ export default function HtmlHead({
 
   const currentLocation = isBrowser ? window.location.href : null;
   const isArticle = currentLocation?.includes(config.blog.path);
+  const router = useRouter();
+  const canonicalUrl = (config.siteUrl + (router.asPath === "/" ? "" : router.asPath)).split("?")[0];
 
   return (
     <>
@@ -33,7 +36,7 @@ export default function HtmlHead({
         title={title}
         titleTemplate={config.titleTemplate}
         description={description}
-        canonical={config.siteUrl}
+        canonical={canonicalUrl}
         openGraph={{
           type: isArticle ? 'article' : 'website',
           locale: config.siteLocale,
@@ -43,8 +46,8 @@ export default function HtmlHead({
           images: [
             {
               url: image,
-              width: 1600,
-              height: 900,
+              width: 1200,
+              height: 630,
               alt: title,
             },
           ],
@@ -73,9 +76,6 @@ export default function HtmlHead({
       <NextHead>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='theme-color' content='#171923' />
-        <meta name='msapplication-TileColor' content='#171923' />
-        <meta name='msapplication-starturl' content='/' />
-        <meta name='msapplication-config' content='/browserconfig.xml' />
 
         <meta name='twitter:image' content={image} />
 
@@ -98,11 +98,6 @@ export default function HtmlHead({
           type='image/png'
           sizes='16x16'
           href='/images/favicon-16x16.png'
-        />
-        <link
-          rel='mask-icon'
-          href='/images/safari-pinned-tab.svg'
-          color='#171923'
         />
         <script async src="https://cdn.splitbee.io/sb.js"></script>
       </NextHead>

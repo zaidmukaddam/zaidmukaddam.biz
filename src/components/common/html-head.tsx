@@ -32,6 +32,7 @@ export default function HtmlHead({
 
   return (
     <>
+      <link rel="dns-prefetch" href="https://zaidmukaddam.biz/images/blog/banner.jpg" />
       <NextSeo
         title={title}
         titleTemplate={config.titleTemplate}
@@ -59,7 +60,7 @@ export default function HtmlHead({
         twitter={{
           handle: '@zaidmukaddam',
           site: '@zaidmukaddam',
-          cardType: 'summary_large_image',
+          cardType: 'summary_large_image'
         }}
         additionalMetaTags={[
           {
@@ -76,7 +77,6 @@ export default function HtmlHead({
       <NextHead>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='theme-color' content='#171923' />
-        <link rel="dns-prefetch" href="https://zaidmukaddam.biz/images/blog/banner.jpg" />
 
         <meta name='twitter:image' content={image} />
 

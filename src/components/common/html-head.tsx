@@ -76,6 +76,7 @@ export default function HtmlHead({
       <NextHead>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='theme-color' content='#171923' />
+        <link rel="dns-prefetch" href="https://zaidmukaddam.biz/images/blog/banner.jpg" />
 
         <meta name='twitter:image' content={image} />
 

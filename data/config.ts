@@ -26,7 +26,7 @@ const config = {
   },
   linkedIn: 'https://www.linkedin.com/in/zaid-mukaddam-26b155202/',
   gitHub: 'https://github.com/zaidmukaddam',
-  keywords: [ 'zaid', 'mukaddam', 'zaid mukaddam', 'zaidmukaddam', 'blog' ],
+  keywords: [ 'zaid','mukaddam','zaid mukaddam','zaidmukaddam','blog' ],
 } as const;
 
 export default config;

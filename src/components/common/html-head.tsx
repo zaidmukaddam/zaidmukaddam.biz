@@ -35,7 +35,7 @@ export default function HtmlHead({
       <NextHead>
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta name='theme-color' content='#171923' />
-        <link rel="dns-prefect"  />
+        <link rel="dns-prefect" href="/images/blog/banner.jpg" />
 
         <link rel='shortcut icon' href='/favicon.ico' />
         <link rel='manifest' href='/manifest.webmanifest' />

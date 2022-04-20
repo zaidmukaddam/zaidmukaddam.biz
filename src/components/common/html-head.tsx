@@ -58,9 +58,17 @@ export default function HtmlHead({
           href='/images/favicon-16x16.png'
         />
         <script async src="https://cdn.splitbee.io/sb.js"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5V71Z464S"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-R5V71Z464S');`
+        }} />
       </NextHead>
 
-      <DefaultSeo 
+      <DefaultSeo
         title={title}
         titleTemplate={config.titleTemplate}
         description={description}
